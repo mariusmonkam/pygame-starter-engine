@@ -23,19 +23,14 @@ class SettingsPage:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print("Mouse button down event detected")
                     if self.button_rect.collidepoint(event.pos):
-                        print("Start button clicked")
                         self.running = False
-                    else:
-                        print("Click outside button")
 
             self.screen.fill(self.settings['screen_fill_color'])
             self.display_settings()
             self.draw_button()
             pygame.display.update()
         
-        print("Exiting settings page")
         return self.settings
 
     def display_settings(self):
@@ -51,6 +46,3 @@ class SettingsPage:
 
         pygame.draw.rect(self.screen, button_color, self.button_rect)
         self.screen.blit(self.button_text, self.button_text_rect)
-
-        # Print statement to confirm the button is being drawn
-        print(f"Drawing button at {self.button_rect.topleft} with size {self.button_rect.size}")

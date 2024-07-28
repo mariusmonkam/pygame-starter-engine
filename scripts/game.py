@@ -3,15 +3,15 @@ import sys
 from fighter import Fighter
 from alien import Alien
 from ball import Ball
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_FILL_COLOR, GAME_CAPTION
 from game_music import GameMusic, SoundEffects
 from generate_midi import generate_sound_files
 
 class Game:
-    def __init__(self):
-        pygame.display.set_caption(GAME_CAPTION)
-        self.screen_width, self.screen_height = SCREEN_WIDTH, SCREEN_HEIGHT
-        self.screen_fill_color = SCREEN_FILL_COLOR
+    def __init__(self, settings):
+        self.settings = settings
+        pygame.display.set_caption(self.settings['game_caption'])
+        self.screen_width, self.screen_height = self.settings['screen_width'], self.settings['screen_height']
+        self.screen_fill_color = self.settings['screen_fill_color']
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.game_font = pygame.font.Font(None, 30)
         self.game_score = 0
@@ -104,11 +104,3 @@ class Game:
         self.screen.blit(game_over_text, game_over_rectangle)
         pygame.display.update()
         pygame.time.wait(5000)
-
-# Entry point
-if __name__ == "__main__":
-    pygame.init()
-    pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
-    game = Game()
-    game.run()
-    pygame.quit()

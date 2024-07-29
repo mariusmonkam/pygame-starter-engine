@@ -1,0 +1,39 @@
+name: pygame-starter-engine
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-pygbag:
+    name: Build and Deploy Pygame Starter Engine
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install pygbag
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pygbag
+
+      - name: Build the Game
+        run: |
+          echo "Attempting to build the game"
+          python -m pygbag --build $GITHUB_WORKSPACE/pygame-starter-engine/scripts/main.py
+          echo "Successfully built the game and compiled to WebAssembly"
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.1.7
+        with:
+          branch: gh-pages
+          folder: pygame-starter-engine/build/web
+          clean: true # Ensure the target branch is cleaned before deployment

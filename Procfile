@@ -1,1 +1,1 @@
-web: node index.js
+web: python scripts/main.py

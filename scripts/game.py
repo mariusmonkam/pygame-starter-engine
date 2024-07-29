@@ -1,4 +1,5 @@
 import pygame
+import os
 import sys
 import socket
 import threading
@@ -11,7 +12,9 @@ from generate_midi import generate_sound_files
 
 # Constants for server connection
 SERVER_IP = socket.gethostbyname(socket.gethostname())  # Update with your server IP address
-SERVER_PORT = 12345
+SERVER_PORT = int(os.getenv('PORT', 12345))
+
+
 
 class Connection:
     def __init__(self):

@@ -1,11 +1,14 @@
 import os
 import pygame
 import socket
+import http.server
+import socketserver
+from threading import Thread
 from game import Game
 from settings_page import SettingsPage
 
 # Constants for server connection
-SERVER_PORT = 12345
+SERVER_PORT = int(os.getenv('PORT', 12345))
 
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -19,6 +22,12 @@ def get_local_ip():
         s.close()
     return IP
 
+def start_server():
+    handler = http.server.SimpleHTTPRequestHandler
+    httpd = socketserver.TCPServer(("", SERVER_PORT), handler)
+    print(f"Serving on port {SERVER_PORT}")
+    httpd.serve_forever()
+
 if __name__ == "__main__":
     pygame.init()
 
@@ -29,6 +38,11 @@ if __name__ == "__main__":
 
     local_ip = get_local_ip()
     connection_data = f"http://{local_ip}:{SERVER_PORT}"
+
+    # Start the server in a separate thread
+    server_thread = Thread(target=start_server)
+    server_thread.daemon = True
+    server_thread.start()
     
     # Show settings page with option to display QR code
     settings_page = SettingsPage()

@@ -4,7 +4,7 @@
   "description": "pygame-starter-engine is an npm package designed to help developers quickly set up a game board engine using Python and Pygame. It seamlessly integrates with Node.js, allowing you to start and manage your Pygame-based game as a child process of your Node.js server.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "play": "node index.js"
   },
   "repository": {
     "type": "git",

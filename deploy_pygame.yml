@@ -28,7 +28,7 @@ jobs:
       - name: Build the Game
         run: |
           echo "Attempting to build the game"
-          python -m pygbag --build $GITHUB_WORKSPACE/pygame-starter-engine/scripts/main.py
+          python -m pygbag --build $GITHUB_WORKSPACE/scripts/main.py
           echo "Successfully built the game and compiled to WebAssembly"
 
       - name: Deploy to GitHub Pages

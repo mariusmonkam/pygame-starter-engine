@@ -52,6 +52,8 @@ class Connection:
 
 class Game:
     def __init__(self, settings, username):
+        pygame.init()
+        pygame.font.init()  # Ensure font module is initialized
         self.settings = settings
         self.username = username
         pygame.display.set_caption(self.settings['game_caption'])
@@ -76,11 +78,17 @@ class Game:
         generate_sound_files()
 
         # Initialize game music with the provided background music file
-        self.music = GameMusic('music/children_music_pretty.mid')
-        self.music.play_background_music()
+        try:
+            self.music = GameMusic('music/children_music_pretty.mid')
+            self.music.play_background_music()
+        except Exception as e:
+            print(f"Error loading or playing music: {e}")
 
         # Initialize sound effects
-        self.sound_effects = SoundEffects('effects/shoot_sound.mid', 'effects/collision_sound.mid')
+        try:
+            self.sound_effects = SoundEffects('effects/shoot_sound.mid', 'effects/collision_sound.mid')
+        except Exception as e:
+            print(f"Error loading sound effects: {e}")
 
         self.send_initial_data()
 
@@ -89,14 +97,14 @@ class Game:
         self.connection.send_data(initial_data)
 
     def run(self):
-        threading.Thread(target=self.receive_game_state).start()
+        threading.Thread(target=self.receive_game_state, daemon=True).start()  # Use daemon=True to allow threads to exit
 
         while self.game_is_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.music.stop_background_music()
                     self.game_is_running = False
                     self.connection.client_socket.close()
+                    pygame.quit()
                     sys.exit()
                 self.handle_key_events(event)
 
@@ -162,6 +170,7 @@ class Game:
                     else:
                         self.messages.append(game_state)
                 except json.JSONDecodeError:
+                    print("Error decoding JSON:", game_state_json)
                     self.messages.append(game_state_json)
 
     def draw_screen(self):

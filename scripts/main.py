@@ -1,3 +1,4 @@
+import os
 import pygame
 import socket
 from game import Game
@@ -20,7 +21,10 @@ def get_local_ip():
 
 if __name__ == "__main__":
     pygame.init()
-    pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
+
+    # Check if running on Heroku
+    if 'DYNO' not in os.environ:
+        pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
     pygame.font.init()  # Ensure font module is initialized
 
     local_ip = get_local_ip()

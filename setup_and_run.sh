@@ -1,13 +1,10 @@
 #!/bin/bash
 
-# Set up a Python virtual environment
-python -m venv venv
+# Install pipenv if not already installed
+pip install pipenv
 
-# Activate the virtual environment
-source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
-
-# Install Python packages
-pip install -r requirements.txt
+# Install dependencies using Pipenv
+pipenv install
 
 # Run the Node.js script
 node index.js

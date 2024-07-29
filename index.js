@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 
-// index.js
-const { spawn } = require("child_process");
+const { execSync, spawn } = require("child_process");
+
+// Ensure Pipenv is installed
+execSync("pip install pipenv", { stdio: "inherit" });
+
+// Install dependencies using Pipenv
+execSync("pipenv install", { stdio: "inherit" });
 
 // Path to your Python script
 const pythonScriptPath = "scripts/main.py";
 
-// Spawn a new Python process
-const pythonProcess = spawn("python", [pythonScriptPath]);
+// Spawn a new Python process with Pipenv
+const pythonProcess = spawn("pipenv", ["run", "python", pythonScriptPath]);
 
 // Capture stdout from the Python script
 pythonProcess.stdout.on("data", (data) => {
